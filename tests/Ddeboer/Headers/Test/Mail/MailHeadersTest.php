@@ -13,5 +13,7 @@ class MailHeadersTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('jamesbond@gmail.com', $headers->get('delivered-to'));
         $this->assertEquals('Q <q@gmail.com>', $headers->get('from'));
         $this->assertInternalType('array', $headers->get('received'));
+
+        $this->assertInstanceOf('\DateTime', $headers->getDate());
     }
 }

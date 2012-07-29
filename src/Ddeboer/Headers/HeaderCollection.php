@@ -16,7 +16,7 @@ class HeaderCollection extends Collection
      */
     public static function fromString($headers)
     {
-        return new self(self::parseHeaders($headers));
+        return new static(self::parseHeaders($headers));
     }
 
     /**
