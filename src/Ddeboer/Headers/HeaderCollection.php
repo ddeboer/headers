@@ -4,6 +4,11 @@ namespace Ddeboer\Headers;
 
 class HeaderCollection extends Collection
 {
+    public function get($key)
+    {
+        return parent::get(self::normalizeKey($key));
+    }
+
     /**
      * Create a header collection from a headers string
      *
@@ -29,7 +34,7 @@ class HeaderCollection extends Collection
             if (strpos($line, ': ')) {
                 // Start of header field
                 $parts = \explode(': ', $line, 2);
-                $key = trim($parts[0]);
+                $key = self::normalizeKey(trim($parts[0]));
                 $value = trim($parts[1]);
 
                 if (!isset($headers[$key])) {
@@ -52,5 +57,10 @@ class HeaderCollection extends Collection
         }
 
         return $headers;
+    }
+
+    protected static function normalizeKey($key)
+    {
+        return strtolower($key);
     }
 }

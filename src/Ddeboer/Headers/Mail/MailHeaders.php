@@ -11,4 +11,18 @@ use Ddeboer\Headers\HeaderCollection;
  */
 class MailHeaders extends HeaderCollection
 {
+    public function getMessageId()
+    {
+        return $this->get('Message-ID');
+    }
+
+    public function getTo()
+    {
+
+    }
+
+    public function getFrom()
+    {
+
+    }
 }

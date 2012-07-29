@@ -1,6 +1,6 @@
 {
     "name": "ddeboer/headers",
-    "description": "A PHP 5.3 library for working with HTTP and mail headers",
+    "description": "A PHP 5.3 library for working with HTTP and mail message headers",
     "authors": [
         {
             "name": "David de Boer",
