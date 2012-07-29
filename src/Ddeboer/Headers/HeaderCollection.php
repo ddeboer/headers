@@ -28,12 +28,14 @@ class HeaderCollection extends Collection
      */
     protected static function parseHeaders($headers)
     {
-        $lines = preg_split('/\\r?\\n/', $headers, -1);
+        $lines = preg_split('/\\r?\\n/', $headers);
         $headers = array();
         foreach ($lines as $line) {
-            if (strpos($line, ': ')) {
-                // Start of header field
-                $parts = \explode(': ', $line, 2);
+            if (preg_match('/^[\S|\T]/', $line)) {
+                // Start of new header field: this line must contain a colon
+                // (:) to separate header field and value. Note that the colon
+                // does not need to be followed by a space.
+                $parts = \explode(':', $line, 2);
                 $key = self::normalizeKey(trim($parts[0]));
                 $value = trim($parts[1]);
 
@@ -45,9 +47,10 @@ class HeaderCollection extends Collection
                     $headers[$key][] = $value;
                 }
             } else {
-                // Continuation of header field
+                // If the line starts with at least one space or tab, it is a
+                // continued (folded) header field, which needs to be unfolded.
+                // @link http://tools.ietf.org/html/rfc5322#section-2.2.3
                 $value = trim($line);
-
                 if (is_array($headers[$key])) {
                     $headers[$key][] = array_pop($headers[$key]) . $value;
                 } else {
