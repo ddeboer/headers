@@ -2,8 +2,16 @@
 
 namespace Ddeboer\Headers;
 
+/**
+ * Class HeaderCollection
+ * @package Ddeboer\Headers
+ */
 class HeaderCollection extends Collection
 {
+    /**
+     * @param $key
+     * @return null
+     */
     public function get($key)
     {
         return parent::get(self::normalizeKey($key));
@@ -62,6 +70,10 @@ class HeaderCollection extends Collection
         return $headers;
     }
 
+    /**
+     * @param $key
+     * @return string
+     */
     protected static function normalizeKey($key)
     {
         return strtolower($key);
