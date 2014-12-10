@@ -31,7 +31,7 @@ class HeaderCollection extends Collection
         $lines = preg_split('/\\r?\\n/', $headers);
         $headers = array();
         foreach ($lines as $line) {
-            if (preg_match('/^[\S|\T]/', $line)) {
+            if (preg_match('/^[\S\T]/', $line)) {
                 // Start of new header field: this line must contain a colon
                 // (:) to separate header field and value. Note that the colon
                 // does not need to be followed by a space.
