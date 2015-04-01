@@ -2,8 +2,16 @@
 
 namespace Ddeboer\Headers;
 
+/**
+ * Class HeaderCollection
+ * @package Ddeboer\Headers
+ */
 class HeaderCollection extends Collection
 {
+    /**
+     * @param $key
+     * @return null
+     */
     public function get($key)
     {
         return parent::get(self::normalizeKey($key));
@@ -28,7 +36,7 @@ class HeaderCollection extends Collection
      */
     protected static function parseHeaders($headers)
     {
-        $lines = preg_split('/\\r?\\n/', $headers);
+        $lines   = preg_split('/\\r?\\n/', $headers);
         $headers = array();
         foreach ($lines as $line) {
             if (preg_match('/^[\S|\T]/', $line)) {
@@ -36,7 +44,7 @@ class HeaderCollection extends Collection
                 // (:) to separate header field and value. Note that the colon
                 // does not need to be followed by a space.
                 $parts = \explode(':', $line, 2);
-                $key = self::normalizeKey(trim($parts[0]));
+                $key   = self::normalizeKey(trim($parts[0]));
                 $value = trim($parts[1]);
 
                 if (!isset($headers[$key])) {
@@ -50,11 +58,13 @@ class HeaderCollection extends Collection
                 // If the line starts with at least one space or tab, it is a
                 // continued (folded) header field, which needs to be unfolded.
                 // @link http://tools.ietf.org/html/rfc5322#section-2.2.3
-                $value = trim($line);
-                if (is_array($headers[$key])) {
-                    $headers[$key][] = array_pop($headers[$key]) . $value;
-                } else {
-                    $headers[$key] .= $value;
+                if (isset($key)) {
+                    $value = trim($line);
+                    if (is_array($headers[$key])) {
+                        $headers[$key][] = array_pop($headers[$key]) . $value;
+                    } else {
+                        $headers[$key] .= $value;
+                    }
                 }
             }
         }
@@ -62,6 +72,10 @@ class HeaderCollection extends Collection
         return $headers;
     }
 
+    /**
+     * @param $key
+     * @return string
+     */
     protected static function normalizeKey($key)
     {
         return strtolower($key);
